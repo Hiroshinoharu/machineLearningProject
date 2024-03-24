@@ -169,6 +169,8 @@ public class ConvolutionLayer extends Layer{
 		
 		for(int i =0; i<_lastInput.size();i++) {
 			
+			double[][] errorForInput = new double[_inRows][_inCols];
+			
 			for(int f = 0; f < _filters.size();f++) {
 				
 				double[][] currFilter = _filters.get(f);
@@ -179,10 +181,107 @@ public class ConvolutionLayer extends Layer{
 				
 				double[][] delta = multiply(dLdF,_learningRate*-1);
 				double[][] newTotalDelta = add(filtersDelta.get(f),delta);
+				filtersDelta.set(f, newTotalDelta);
+				
+				double[][] flippedError = flipArrayHorizontal(flipArrayVertical(spacedError));
+				errorForInput = add(errorForInput, fullConvolve(currFilter, flippedError));
 				
 			}
 			
+			dLdOPreviousLayer.add(errorForInput);
+			
 		}
+		
+		for(int f =0; f< _filters.size(); f++) {
+			double[][] modified = add(filtersDelta.get(f),_filters.get(f));
+			_filters.set(f, modified);
+		}
+		
+		if(_previousLayer != null) {
+			_previousLayer.backPropagation(dLdOPreviousLayer);
+		}
+		
+	}
+	
+	public double[][] flipArrayHorizontal(double[][] array){
+		
+		int rows = array.length;
+		int cols = array[0].length;
+		
+		double[][] output = new double[rows][cols];
+		
+		for(int i = 0;i < rows; i++) {
+			for(int j = 0;j < rows; j++) {
+				output[rows-i-1][j] = array[i][j];
+			}
+		}
+		
+		return output;
+	}
+	
+	public double[][] flipArrayVertical(double[][] array){
+		
+		int rows = array.length;
+		int cols = array[0].length;
+		
+		double[][] output = new double[rows][cols];
+		
+		for(int i = 0;i < rows; i++) {
+			for(int j = 0;j < rows; j++) {
+				output[i][cols-j-1] = array[i][j];
+			}
+		}
+		
+		return output;
+	}
+	
+	private double[][] fullConvolve(double[][] input, double[][] filter) {
+		
+		int outRows = (input.length + filter.length) + 1;
+		int outCols = (input[0].length + filter[0].length) + 1;
+		
+		int inRows = input.length;
+		int inCols = input[0].length;
+		
+		int fRows = filter.length;
+		int fCols = filter[0].length;
+		
+		double[][] output = new double[outRows][outCols];
+		
+		int outRow = 0;
+		int outCol;
+		
+		for(int i = -fRows + 1; i < inRows; i++) {
+			
+			outCol = 0;
+			
+			for(int j = -fCols; j < inCols; j++) {
+				
+				double sum = 0.0;
+				
+				//Apply filter around this position
+				for(int x = 0; x < fRows; x++) {
+					for(int y = 0; y < fCols; y++) {
+						int inputRowIndex = i+x;
+						int inputColIndex = j+y;
+						
+						if(inputRowIndex >= 0 && inputColIndex >= 0 && inputRowIndex < inRows && inputColIndex < inCols) {
+							double value = filter[x][y] * input[inputRowIndex][inputColIndex];
+							sum += value;
+						}
+					}
+				}
+				
+				output[outRow][outCol] = sum;
+				outCol++;
+				
+			}
+			
+			outRow++;
+			
+		}
+		
+		return output;
 		
 	}
 
@@ -194,8 +293,8 @@ public class ConvolutionLayer extends Layer{
 
 	@Override
 	public void backPropagation(double[] dLdO) {
-		// TODO Auto-generated method stub
-		
+		List<double[][]> matrixInput = vectorToMatrix(dLdO, _inLength, _inRows, _inCols);
+		backPropagation(matrixInput);
 	}
 
 	@Override
