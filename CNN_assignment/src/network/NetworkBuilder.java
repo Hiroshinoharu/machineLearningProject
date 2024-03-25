@@ -57,7 +57,7 @@ public class NetworkBuilder {
 		}
 	}
 	
-	public NeuralNetwork bulid() {
+	public NeuralNetwork build() {
 		net = new NeuralNetwork(_layers,_scaleFactor);
 		return net;
 	}
