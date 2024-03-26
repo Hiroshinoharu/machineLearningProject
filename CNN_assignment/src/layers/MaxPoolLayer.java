@@ -1,3 +1,10 @@
+/*
+ * MaxPoolLayer: This class represents a max pooling layer used in convolutional neural networks.
+ *               It downsamples the input by taking the maximum value within a sliding window.
+ * Author: Max Ceban
+ * Date: 26/03/2024
+ */
+
 package layers;
 
 import java.util.ArrayList;
@@ -6,22 +13,23 @@ import java.util.List;
 public class MaxPoolLayer extends Layer {
 	
 	//Attributes
-	private int _stepSize;
-	private int _windowSize;
+	private int _stepSize; // Step size for the sliding window
+	private int _windowSize; // Size of the pooling window
 	
-	private int _inLength;
-	private int _inRows;
-	private int _inCols;
+	private int _inLength; // Number of input channels
+	private int _inRows; // Number of input rows 
+	private int _inCols; // Number of input columns
 	
-	List<int[][]> _lastMaxRow;
-	List<int[][]> _lastMaxCol;
+	List<int[][]> _lastMaxRow; // Store indices of max elements along rows
+	List<int[][]> _lastMaxCol; // Store indices of max elements along columns
 
 	/**
-	 * @param _stepSize
-	 * @param _windowSize
-	 * @param _inLength
-	 * @param _inRows
-	 * @param _inCols
+	 * Constructor for MaxPoolLayer
+	 * @param _stepSize The step size for the sliding window
+	 * @param _windowSize the size of the pooling window
+	 * @param _inLength Number of input channels
+	 * @param _inRows Number of input rows
+	 * @param _inCols Number of input columns
 	 */
 	public MaxPoolLayer(int _stepSize, int _windowSize, int _inLength, int _inRows, int _inCols) {
 		super();
@@ -32,12 +40,18 @@ public class MaxPoolLayer extends Layer {
 		this._inCols = _inCols;
 	}
 	
+	/**
+     * Performs forward pass of max pooling on the input
+     * @param input List of input matrices (channels)
+     * @return List of pooled matrices (channels)
+     */
 	public List<double[][]> maxPoolForwardPass(List<double[][]> input){
 		
 		List<double[][]> output = new ArrayList<>();
 		_lastMaxRow = new ArrayList<>();
 		_lastMaxCol = new ArrayList<>();
 		
+		// Loop through each input matrix and perform max pooling
 		for(int l = 0; l<input.size(); l++) {
 			output.add(pool(input.get(l)));
 		}
@@ -45,6 +59,11 @@ public class MaxPoolLayer extends Layer {
 		
 	}
 	
+	/**
+     * Performs max pooling on a single input matrix
+     * @param input Input matrix
+     * @return Pooled matrix
+     */
 	public double[][] pool(double[][] input){
 		
 		double[][] output = new double[getOutputRows()][getOutputCols()];
@@ -52,6 +71,7 @@ public class MaxPoolLayer extends Layer {
 		int[][] maxRows = new int[getOutputRows()][getOutputCols()];
 		int[][] maxCols = new int[getOutputRows()][getOutputCols()];
 
+		// Loop through the input matrix with the sliding window
 		for(int r = 0; r < getOutputRows(); r += _stepSize) {
 			for(int c = 0; c < getOutputCols(); c+= _stepSize) {
 				
@@ -59,6 +79,7 @@ public class MaxPoolLayer extends Layer {
 				maxRows[r][c] = -1;
 				maxCols[r][c] = -1;
 				
+				// Find the maxium value within the window
 				for(int x = 0; x < _windowSize; x++) {
 					for(int y =0; y < _windowSize; y++) {
 						if(max < input[r+x][c+y]) {
@@ -73,6 +94,7 @@ public class MaxPoolLayer extends Layer {
 			}
 		}
 		
+		// Store indices of max elements for backpropagation 
 		_lastMaxRow.add(maxRows);
 		_lastMaxCol.add(maxCols);
 		
@@ -86,6 +108,7 @@ public class MaxPoolLayer extends Layer {
 		
 		int l = 0;
 		
+		// Backpropagate errors to previous layer
 		for(double[][] array : dLdO) {
 			
 			double[][] error = new double[_inRows][_inCols];
@@ -106,6 +129,7 @@ public class MaxPoolLayer extends Layer {
 			l++;		
 		}
 		
+		// Propagate errors to previous layer
 		if(_previousLayer != null) {
 		   _previousLayer.backPropagation(dXdL);
 		}
