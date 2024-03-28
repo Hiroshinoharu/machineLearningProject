@@ -5,63 +5,191 @@
  * Author: Max Ceban
  * Date: 26/03/2024
  */
-import java.util.List;
 
-//Importing the static method shuffle from the Collections class
-import static java.util.Collections.shuffle;
+import java.awt.BorderLayout;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-//Importing classes from the 'data' package
-import data.DataReader;
-import data.Image;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-//Importing classes from the 'network' package
-import network.NetworkBuilder;
-import network.NeuralNetwork;
+import CNN.ConvolutionalNeuralNetwork;
 
-public class Main {
+public class Main extends JFrame implements ActionListener{
 
-	public static void main(String[] args) {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	//Attributes
+	private JTextField filePathField;
+	private JButton browseButton;
+	private JButton classifyButton;
+	private JLabel imageView;
+	private JLabel resultLabel;
+	private JButton runCNNButton;
+	
+	public Main() {
+		setTitle("Image Classifier App");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(400,400);
+		setLocationRelativeTo(null); // Center the window
 		
-        // Seed for random number generation
-		long SEED = 123;
+		//Components
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout());
 		
-        // Starting message for data loading
-		System.out.println("Starting data loading...");
+		filePathField = new JTextField(20);
+		filePathField.setEditable(false);
 		
-        // Loading image data from files using DataReader
-		List<Image> imageTest = new DataReader().readData("data/mnist_test.csv");
-		List<Image> imageTrain = new DataReader().readData("data/mnist_train.csv");
+		browseButton = new JButton("Browse");
+		browseButton.addActionListener(this);
+		
+		JPanel filePanel = new JPanel();
+		
+		filePanel.add(filePathField);
+		filePanel.add(browseButton);
+		
+		imageView = new JLabel();
+		imageView.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		JPanel buttonPanel = new JPanel(); // Panel to hold classifyButton and resultLabel
+		
+		classifyButton = new JButton("Classify");
+        classifyButton.addActionListener(this);
+		buttonPanel.add(classifyButton);
+		
+		runCNNButton = new JButton("Run Convultional Neural Network");
+        runCNNButton.addActionListener(this);
+        buttonPanel.add(runCNNButton);
+		
+		resultLabel = new JLabel();
+		buttonPanel.add(resultLabel);
+	
+        mainPanel.add(filePanel, BorderLayout.NORTH);
+        mainPanel.add(imageView, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Displaying the size of loaded image datasets
-		System.out.println("Image Train size: "+ imageTrain.size());
-		System.out.println("Image test size: "+ imageTest.size());
-		
-        // Creating a Neural Network architecture using NetworkBuilder
-		NetworkBuilder builder = new NetworkBuilder(28, 28, 256*100);
-		builder.addConvolutionLayer(8, 8, 1, 0.1, SEED);
-		builder.addMaxPoolLayer(3, 2);
-		builder.addFullyConnectedLayer(10, 0.1, SEED);
-		
-        // Building the Neural Network
-		NeuralNetwork net = builder.build();
-		
-        // Testing the network's performance before training
-		float rate = net.test(imageTest);
-		System.out.println("Pre training sucess rate: "+ rate);
-		
-        // Number of training epochs
-		int epochs = 3;
-		
-        // Training loop
-		for(int i = 0; i < epochs; i++) {
-            // Shuffling the training data for each epoch
-			shuffle(imageTrain);
-            // Training the network with shuffled data
-			net.train(imageTrain);
-            // Testing the network's performance after each training round
-			rate = net.test(imageTest);
-			System.out.println("Sucess rate after round " + i + ": " + rate);
+        add(mainPanel);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource() == browseButton) {
+			JFileChooser fileChooser = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("Image files", "jpg", "jpeg", "png", "gif");
+			fileChooser.setFileFilter(filter);
+			int returnValue = fileChooser.showOpenDialog(this);
+			if(returnValue == JFileChooser.APPROVE_OPTION) {
+				File selectedFile = fileChooser.getSelectedFile();
+				filePathField.setText(selectedFile.getAbsolutePath());
+	            
+				// Load and display the image
+				ImageIcon icon = new ImageIcon(selectedFile.getAbsolutePath());
+				imageView.setIcon(icon);
+				imageView.setText(null); // Clear text if any
+			}
 		}
+		else if (e.getSource() == classifyButton) {
+			//Gets the selected Path
+			String imagePath = filePathField.getText();
+			if(imagePath.isEmpty()) {
+				JOptionPane.showMessageDialog(this, "Please select an image first.");
+				return;
+			}
+			
+			//Preprocessing the Image
+			BufferedImage image = loadImage(imagePath);
+			if(image == null) {
+				JOptionPane.showMessageDialog(this, "Failed to load the image.");
+				return;
+			}
+			
+			//Apply preprocessing steps (e.g., resize, normalize)
+	        image = preprocessImage(image, 28, 28);
+	        
+	        //Classify the preprocessed image
+	        String classificationResult = classifyImage(image);
+	        
+	        // Display the classification result
+	        resultLabel.setText(classificationResult);
+		}
+	 else if(e.getSource() == runCNNButton) {
+		ConvolutionalNeuralNetwork.run(); 
+	 }
 	}
 
+	private String classifyImage(BufferedImage image) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private BufferedImage loadImage(String imagePath) {
+		// TODO Auto-generated method stub
+		try {
+			return ImageIO.read(new File(imagePath));
+		}catch (IOException ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	// Preprocess the image (resize, convert to grayscale, etc.)
+	private BufferedImage preprocessImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
+	    BufferedImage resizedImage = resizeImage(originalImage, targetWidth, targetHeight);
+	    BufferedImage grayscaleImage = convertToGrayScale(resizedImage);
+	    return grayscaleImage;
+	}
+	
+	private BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
+		BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, originalImage.getType());
+		Graphics2D g = resizedImage.createGraphics();
+		g.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
+	    g.dispose();
+	    return resizedImage;
+	}
+	
+	private BufferedImage convertToGrayScale(BufferedImage originalImage) {
+		
+		int width = originalImage.getWidth();
+		int height = originalImage.getHeight();
+		
+		BufferedImage grayscaleImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		
+		for(int y = 0; y < height; y++) {
+			for(int x = 0; x < width; x++) {
+				int rgb = originalImage.getRGB(x, y);
+	            int r = (rgb >> 16) & 0xFF;
+	            int g = (rgb >> 8) & 0xFF;
+	            int b = rgb & 0xFF;
+	            int gray = (int) (0.2989 * r + 0.5870 * g + 0.1140 * b);
+	            int grayValue = (gray << 16) + (gray << 8) + gray; // Grayscale value for all three channels
+	            grayscaleImage.setRGB(x, y, grayValue);
+			}
+		}
+		return grayscaleImage;
+	}
+	
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(() -> {
+			Main app = new Main();
+			app.setVisible(true);
+		});
+	}
 }
