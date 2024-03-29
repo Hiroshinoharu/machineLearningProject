@@ -74,4 +74,5 @@ public class NetworkBuilder {
 		net = new NeuralNetwork(_layers,_scaleFactor);
 		return net;
 	}
+
 }
