@@ -1,0 +1,23 @@
+Data loaded
+Image Train size: 60000
+Image test size: 10000
+Creating Neural Network architecture....
+Neural Network bulit
+Test data tested
+Pre training sucess rate: 10%
+Number of epochs 3
+Training data shuffled
+Training data being trained
+Training data being tested
+Success rate after round 0: 83%
+Failure rate after round 0: 17%
+Training data shuffled
+Training data being trained
+Training data being tested
+Success rate after round 1: 91%
+Failure rate after round 1: 9%
+Training data shuffled
+Training data being trained
+Training data being tested
+Success rate after round 2: 93%
+Failure rate after round 2: 7%

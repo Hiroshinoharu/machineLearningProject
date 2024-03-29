@@ -1,67 +1,95 @@
-/*
- * Main: This class serves as the entry point for the program. It loads image data, constructs a neural network,
- *       trains the network, and evaluates its performance.
- * 
- * Author: Max Ceban
- * Date: 26/03/2024
- */
-import java.util.List;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-//Importing the static method shuffle from the Collections class
-import static java.util.Collections.shuffle;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
-//Importing classes from the 'data' package
-import data.DataReader;
-import data.Image;
+import cnn.ConvolutionalNeuralNetwork;
+import cnn.Logger;
 
-//Importing classes from the 'network' package
-import network.NetworkBuilder;
-import network.NeuralNetwork;
+public class Main extends JFrame implements ActionListener{
 
-public class Main {
-
-	public static void main(String[] args) {
-		
-        // Seed for random number generation
-		long SEED = 123;
-		
-        // Starting message for data loading
-		System.out.println("Starting data loading...");
-		
-        // Loading image data from files using DataReader
-		List<Image> imageTest = new DataReader().readData("data/mnist_test.csv");
-		List<Image> imageTrain = new DataReader().readData("data/mnist_train.csv");
-
-        // Displaying the size of loaded image datasets
-		System.out.println("Image Train size: "+ imageTrain.size());
-		System.out.println("Image test size: "+ imageTest.size());
-		
-        // Creating a Neural Network architecture using NetworkBuilder
-		NetworkBuilder builder = new NetworkBuilder(28, 28, 256*100);
-		builder.addConvolutionLayer(8, 8, 1, 0.1, SEED);
-		builder.addMaxPoolLayer(3, 2);
-		builder.addFullyConnectedLayer(10, 0.1, SEED);
-		
-        // Building the Neural Network
-		NeuralNetwork net = builder.build();
-		
-        // Testing the network's performance before training
-		float rate = net.test(imageTest);
-		System.out.println("Pre training sucess rate: "+ rate);
-		
-        // Number of training epochs
-		int epochs = 3;
-		
-        // Training loop
-		for(int i = 0; i < epochs; i++) {
-            // Shuffling the training data for each epoch
-			shuffle(imageTrain);
-            // Training the network with shuffled data
-			net.train(imageTrain);
-            // Testing the network's performance after each training round
-			rate = net.test(imageTest);
-			System.out.println("Sucess rate after round " + i + ": " + rate);
-		}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	//Attributes
+	private JButton runButton;
+	private JTextArea outputField;
+	private JLabel trademark;
+	
+	private boolean cnnTrained = false;
+	
+	public Main() {
+		initializeUI();	
 	}
+	
+	private void initializeUI() {
+		setTitle("Convolutional Neural Network app");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(600,600);
+		setResizable(false);
+		setLocationRelativeTo(null); //Center the window
+		
+		//Components
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout());
+		
+		JPanel runPanel = new JPanel();
+		runButton = new JButton("Run Convolutional Neural Network training");
+		runButton.addActionListener(this);
+		runPanel.add(runButton);
+		mainPanel.add(runPanel,BorderLayout.NORTH);
 
+		
+		outputField = new JTextArea(15, 30);
+		outputField.setEditable(false);
+		JScrollPane scrollPane = new JScrollPane(outputField);
+		mainPanel.add(scrollPane, BorderLayout.CENTER);
+		
+		JPanel resultPanel = new JPanel();
+		trademark = new JLabel("	C22380206 Max Ceban @2024");
+		resultPanel.add(trademark,BorderLayout.CENTER);
+		mainPanel.add(resultPanel,BorderLayout.SOUTH);
+		
+		add(mainPanel);
+		pack();
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource() == runButton) {			
+			if(!cnnTrained) {
+				trainCNN();
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "Convolutional Neural Network has been trained already");
+			}	
+		}
+		
+		
+	}
+	
+	private void trainCNN() {
+		ConvolutionalNeuralNetwork.run();
+		Logger.updateTextField(Logger.getLogger(), outputField);
+		cnnTrained = true;
+	}
+	
+	
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(() -> {
+			Main app = new Main();
+			app.setVisible(true);
+		});
+	}
 }
