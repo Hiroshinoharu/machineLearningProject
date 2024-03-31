@@ -43,4 +43,10 @@ Furthermore, it aims to demonstrate competency in applying OOP ideas to complica
 * NeuralNetwork: This class represents a neural network used for image classification. It includes methods for training the network, making predictions, and testing accuracy.
 
 ## Core Functionality
-* I've included all the base compartments to create a CNN from scratch 
+The project includes functionalities for preprocessing data, loading CSV datasets, constructing the neural network architecture, training the network, shuffling data before evaluation.
+
+## Optional Functionality
+Optional functionalities include a logger for logging CNN actions and a graph visualization for live training visualization.
+
+## Future Improvements
+Given more time, additional layers such as Softmax and output layers could be implemented for image classification. Integration with an image classifier app could be explored to extend functionality. 
