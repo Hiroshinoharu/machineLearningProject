@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -82,9 +84,16 @@ public class Main extends JFrame implements ActionListener{
 	}
 
 	private void trainCNN() {
-		ConvolutionalNeuralNetwork.run();
-		Logger.updateTextArea(Logger.getLogger(), outputField);
-		cnnTrained = true;
+        
+		// Creating a thread pool with 12 threads
+		ExecutorService executorService = Executors.newFixedThreadPool(12);
+		
+		executorService.execute(() -> {
+			ConvolutionalNeuralNetwork.run();
+			Logger.updateTextArea(Logger.getLogger(), outputField);
+			cnnTrained = true;
+			executorService.shutdown();
+		});
 	}
 
 

@@ -29,7 +29,7 @@ import network.NeuralNetwork;
 
 public class ConvolutionalNeuralNetwork {
 
-	public static void run() {
+	public static void run(String filePath) {
 
 		Logger.createLogger();
 
@@ -87,7 +87,7 @@ public class ConvolutionalNeuralNetwork {
 
 
         // Number of training epochs
-		int epochs = 5;
+		int epochs = 3;
 		Logger.writeLogger("Number of epochs " + epochs);
 		
         validationAccuracySeries.add(0, 0);
