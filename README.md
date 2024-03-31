@@ -38,6 +38,7 @@ Furthermore, it aims to demonstrate competency in applying OOP ideas to complica
 * ConvolutionLayer: This class represents a convolutional layer in a convolutional neural network (CNN). It applies convolution operation to input feature maps using randomly initialized filters. The class also handles forward pass, backpropagation, and weight updates.
   ![image](https://github.com/Hiroshinoharu/machineLearningProject/assets/101023145/2a95f895-6fa5-4918-9d63-4a7c299319d7)
 * FullyConnectedLayer: This class represents a fully connected layer in a neural network. It connects every neuron in the input to every neuron in the output.
+
   ![image](https://github.com/Hiroshinoharu/machineLearningProject/assets/101023145/0a692528-54f6-404d-82fe-e30994c0e071)
 * Layer: This abstract class represents a generic layer in a neural network. It defines common properties and behaviors for all types of layers.
 * MaxPoolLayer: This class represents a max pooling layer used in convolutional neural networks. It downsamples the input by taking the maximum value within a sliding window.
