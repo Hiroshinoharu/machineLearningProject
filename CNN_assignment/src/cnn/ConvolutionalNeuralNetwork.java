@@ -29,7 +29,7 @@ import network.NeuralNetwork;
 
 public class ConvolutionalNeuralNetwork {
 
-	public static void run(String filePath) {
+	public static void run() {
 
 		Logger.createLogger();
 
