@@ -1,3 +1,12 @@
+/*
+ * ConvolutionLayer: This class represents a convolutional layer in a convolutional neural network (CNN).
+ * It applies convolution operation to input feature maps using randomly initialized filters.
+ * The class also handles forward pass, backpropagation, and weight updates.
+ *
+ * Author: Max Ceban
+ * Date: 31/03/2024
+ */
+
 package layers;
 
 import static data.MatrixUtility.add;
