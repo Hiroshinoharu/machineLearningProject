@@ -16,13 +16,13 @@ import layers.Layer;
 import layers.MaxPoolLayer;
 
 public class NetworkBuilder {
-	
+
 	private NeuralNetwork net; // The neural network being built
-	private int _inputRows; // Number of rows in the input range 
+	private int _inputRows; // Number of rows in the input range
 	private int _inputCols; // Number of columns in the input image
 	private double _scaleFactor; // Factor used for scaling input data
 	List<Layer> _layers; // List to store the layers of the network
-	
+
 	/**
 	 * Constructor to initialize the NetworkBuilder object with input dimensions and scale factor.
 	 * @param _inputRows Number of rows in the input range
@@ -36,10 +36,10 @@ public class NetworkBuilder {
 		this._scaleFactor = _scaleFactor;
 		_layers = new ArrayList<>(); // Initialize thee list of layers
 	}
-	
+
 	// Method to add a convolutional layer to the network
 	public void addConvolutionLayer(int numFilters, int filterSize, int stepSize, double learningRate, long SEED) {
-		
+
 		if(_layers.isEmpty()) {
 			_layers.add(new ConvolutionLayer(filterSize, stepSize, 1, _inputRows, _inputCols, SEED, numFilters, learningRate));
 		} else {
@@ -47,10 +47,10 @@ public class NetworkBuilder {
 			_layers.add(new ConvolutionLayer(filterSize, stepSize, prev.getOutputLength(), prev.getOutputRows(), prev.getOutputCols(), SEED, numFilters, learningRate));
 		}
 	}
-	
+
 	// Method to add a max pooling layer to the network
 	public void addMaxPoolLayer(int windowSize, int stepSize) {
-		
+
 		if(_layers.isEmpty()) {
 			_layers.add(new MaxPoolLayer(stepSize, windowSize, 1, _inputRows, _inputCols));
 		} else {
@@ -58,7 +58,7 @@ public class NetworkBuilder {
 			_layers.add(new MaxPoolLayer(stepSize, windowSize, prev.getOutputLength(), prev.getOutputRows(), prev.getOutputCols()));
 		}
 	}
-	
+
 	// Method to add a fully connected layer to the network
 	public void addFullyConnectedLayer(int outLength, double learningRate, long SEED) {
 		if(_layers.isEmpty()) {
@@ -68,7 +68,7 @@ public class NetworkBuilder {
 			_layers.add(new FullyConnectedLayer(prev.getOutputElements(), outLength, SEED, learningRate));
 		}
 	}
-	
+
 	// Method to build the neural network using the constructed layers
 	public NeuralNetwork build() {
 		net = new NeuralNetwork(_layers,_scaleFactor);

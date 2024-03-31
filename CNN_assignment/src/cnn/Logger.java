@@ -9,9 +9,9 @@ import java.io.PrintWriter;
 import javax.swing.JTextArea;
 
 public class Logger {
-	
+
     private static final String LOG_FILE = "Logger.txt";
-	
+
 	public static void createLogger() {
 		try {
             PrintWriter myLogger = new PrintWriter(LOG_FILE);
@@ -22,7 +22,7 @@ public class Logger {
             e.printStackTrace();
         }
 	}
-	
+
 	public static PrintWriter getLogger() {
         try {
             FileWriter fileWriter = new FileWriter(LOG_FILE, true);
@@ -34,7 +34,7 @@ public class Logger {
             return null;
         }
     }
-	
+
 	public static void writeLogger(String text) {
 		try (FileWriter fileWriter = new FileWriter(LOG_FILE, true);
 	             PrintWriter printWriter = new PrintWriter(fileWriter)) {
@@ -44,14 +44,14 @@ public class Logger {
 	             e.printStackTrace();
 	        }
 	}
-	
-	public static void updateTextField(PrintWriter logger, JTextArea outputField) {
+
+	public static void updateTextArea(PrintWriter logger, JTextArea outputField) {
 		// TODO Auto-generated method stub
 		outputField.setText("");
-		
+
 		if(logger != null) {
 			logger.flush();
-			
+
 			try(BufferedReader reader = new BufferedReader(new FileReader("Logger.txt"))){
 				String line;
 				while((line = reader.readLine()) != null) {
@@ -64,6 +64,6 @@ public class Logger {
 		else {
 			outputField.append("Logger is null\n");
 		}
-		
+
 	}
 }

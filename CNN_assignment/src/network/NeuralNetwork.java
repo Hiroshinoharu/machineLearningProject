@@ -7,14 +7,14 @@
 
 package network;
 
-import data.Image;
-import layers.Layer;
+import static data.MatrixUtility.add;
+import static data.MatrixUtility.multiply;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static data.MatrixUtility.add;
-import static data.MatrixUtility.multiply;
+import data.Image;
+import layers.Layer;
 
 public class NeuralNetwork {
 
@@ -40,9 +40,9 @@ public class NeuralNetwork {
             if(i == 0){
                 _layers.get(i).set_nextLayer(_layers.get(i+1)); // First layer's next layer is the second
             } else if (i == _layers.size()-1){
-                _layers.get(i).set_previousLayer(_layers.get(i-1)); // Last layer's previous layer is the 2nd to last layer 
+                _layers.get(i).set_previousLayer(_layers.get(i-1)); // Last layer's previous layer is the 2nd to last layer
             } else {
-                _layers.get(i).set_previousLayer(_layers.get(i-1)); // Set previous layer 
+                _layers.get(i).set_previousLayer(_layers.get(i-1)); // Set previous layer
                 _layers.get(i).set_nextLayer(_layers.get(i+1)); // Set next layer
             }
         }
@@ -50,7 +50,7 @@ public class NeuralNetwork {
 
     //Method to calculate errors in the network output
     public double[] getErrors(double[] networkOutput, int correctAnswer){
-        
+
     	int numClasses = networkOutput.length;
 
         double[] expected = new double[numClasses]; //Array to represent expected output
@@ -61,7 +61,7 @@ public class NeuralNetwork {
         return add(networkOutput, multiply(expected, -1));
     }
 
-    // Method to get the index of the maximum value in an array 
+    // Method to get the index of the maximum value in an array
     private int getMaxIndex(double[] in){
 
         double max = 0;
@@ -81,9 +81,9 @@ public class NeuralNetwork {
 
     // Method to make a prediction (guess) based on an input image
     public int guess(Image image){
-    	
+
         List<double[][]> inList = new ArrayList<>();
-        
+
         inList.add(multiply(image.getData(), (1.0/scaleFactor))); // Scale input data
 
         double[] out = _layers.get(0).getOutput(inList); // Get output from the 1st layer
@@ -94,7 +94,7 @@ public class NeuralNetwork {
 
     //Method to test the accuracy of the neural network on a set of images
     public float test (List<Image> images){
-        
+
     	int correct = 0;
 
     	// Iterate through images and check if the network's prediction matches the image's label
@@ -107,7 +107,7 @@ public class NeuralNetwork {
         }
 
         // Return the accuracy as a percentage
-        return((float)correct/images.size());
+        return((float)correct/images.size() * 100);
     }
 
     // Method to train the neural network using a set of images
