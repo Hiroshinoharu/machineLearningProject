@@ -1,6 +1,6 @@
 /*
  * ConvolutionalNeuralNetwork : This class serves as the entry point for the program. It loads image data, constructs a neural network,
- *       trains the network, and evaluates its performance.
+ *       trains the network, and evaluates its performance with a graph displaying its performance .
  *
  * Author: Max Ceban
  * Date: 26/03/2024
@@ -31,6 +31,7 @@ public class ConvolutionalNeuralNetwork {
 
 	public static void run() {
 
+        // Create and initialize logger
 		Logger.createLogger();
 
 		// Seed for random number generation
