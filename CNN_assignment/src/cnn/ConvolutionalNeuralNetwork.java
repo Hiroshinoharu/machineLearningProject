@@ -33,6 +33,7 @@ public class ConvolutionalNeuralNetwork {
 
         // Create and initialize logger
 		Logger.createLogger();
+		Logger.writeLogger("Logger.txt created");
 
 		// Seed for random number generation
 		long SEED = 123;
@@ -96,6 +97,10 @@ public class ConvolutionalNeuralNetwork {
 		
 		for(int i = 0; i < epochs; i++) {
 
+			//Lines added for readability
+            Logger.writeLogger("--------------------------");
+
+			
 			// Shuffling the training data for each epoch
 			shuffle(imageTrain);
 			Logger.writeLogger("Training data shuffled");
@@ -115,7 +120,10 @@ public class ConvolutionalNeuralNetwork {
             System.out.println("Epoch: " + (i + 1) + ", Validation Accuracy: " + Math.round(validationAccuracy) + "%");
             Logger.writeLogger("Epoch: " + (i + 1) + ", Validation Accuracy: " + Math.round(validationAccuracy) + "%");
 
-            updateChart(chartPanel, validationAccuracySeries, epochSeries);	
+            updateChart(chartPanel, validationAccuracySeries, epochSeries);
+            Logger.writeLogger("Chart has been updated");
+            
+            Logger.writeLogger("--------------------------");
 		}
 	}
 

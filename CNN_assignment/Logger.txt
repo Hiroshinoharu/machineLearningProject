@@ -1,3 +1,4 @@
+Logger.txt created
 Data loaded
 Image Train size: 60000
 Image test size: 10000
@@ -6,4 +7,5 @@ Neural Network bulit
 Test data tested
 Pre training sucess rate: 10%
 Number of epochs 3
+--------------------------
 Training data shuffled
