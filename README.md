@@ -36,11 +36,30 @@ Furthermore, it aims to demonstrate competency in applying OOP ideas to complica
 * Image: This class represents an image along with its associated label. It is used to store image data and corresponding labels for training or testing.
 * MatrixUtility: This class provides utility methods for matrix operations such as addition and multiplication.
 * ConvolutionLayer: This class represents a convolutional layer in a convolutional neural network (CNN). It applies convolution operation to input feature maps using randomly initialized filters. The class also handles forward pass, backpropagation, and weight updates.
+  ![image](https://github.com/Hiroshinoharu/machineLearningProject/assets/101023145/2a95f895-6fa5-4918-9d63-4a7c299319d7)
 * FullyConnectedLayer: This class represents a fully connected layer in a neural network. It connects every neuron in the input to every neuron in the output.
+
+  ![image](https://github.com/Hiroshinoharu/machineLearningProject/assets/101023145/0a692528-54f6-404d-82fe-e30994c0e071)
 * Layer: This abstract class represents a generic layer in a neural network. It defines common properties and behaviors for all types of layers.
 * MaxPoolLayer: This class represents a max pooling layer used in convolutional neural networks. It downsamples the input by taking the maximum value within a sliding window.
+  ![image](https://github.com/Hiroshinoharu/machineLearningProject/assets/101023145/bc43fff2-3e88-4cb1-bb79-bf6a15ba0d5a)
+
 * NetworkBuilder: This class is responsible for building neural networks by adding different types of layers. It allows the construction of convolutional neural networks (CNNs) for image classification tasks.
 * NeuralNetwork: This class represents a neural network used for image classification. It includes methods for training the network, making predictions, and testing accuracy.
 
 ## Core Functionality
-* I've included all the base compartments to create a CNN from scratch 
+The project includes functionalities for preprocessing data, loading CSV datasets, constructing the neural network architecture, training the network, shuffling data before evaluation.
+
+## Optional Functionality
+Optional functionalities include a logger for logging CNN actions and a graph visualization for live training visualization.
+
+## Future Improvements
+Given more time, additional layers such as Softmax and output layers could be implemented for image classification. Integration with an image classifier app could be explored to extend functionality.
+
+I would also opt in for ways to shorten my run time due to the ammount of opertations during the runtime of my project. 
+
+## Sources
+- [An Introduction to different Types of Convolutions in Deep Learning] https://towardsdatascience.com/types-of-convolutions-in-deep-learning-717013397f4d
+- [Convolutions and Backpropagations] https://pavisj.medium.com/convolutions-and-backpropagations-46026a8f5d2c
+- [A Comprehensive Guide to Convolutional Neural Networks — the ELI5 way] https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53
+- [Backpropagation in Fully Convolutional Networks (FCNs)] https://towardsdatascience.com/backpropagation-in-fully-convolutional-networks-fcns-1a13b75fb56a
