@@ -7,14 +7,3 @@ Test data tested
 Pre training sucess rate: 10%
 Number of epochs 3
 Training data shuffled
-Training data being trained
-Test data being tested
-Epoch: 1, Validation Accuracy: 82%
-Training data shuffled
-Training data being trained
-Test data being tested
-Epoch: 2, Validation Accuracy: 86%
-Training data shuffled
-Training data being trained
-Test data being tested
-Epoch: 3, Validation Accuracy: 92%

@@ -90,10 +90,24 @@ public class Main extends JFrame implements ActionListener{
 		// TODO Auto-generated method stub
 		if(e.getSource() == runButton) {
 			if(!cnnTrained) {
-				trainCNN(); // Train CNN if not trained already
+				// Show a confirmation dialog before training
+	            int choice = JOptionPane.showOptionDialog(
+	                this,
+	                "Are you sure you want to run the Convolutional Neural Network training process?",
+	                "Confirm Training",
+	                JOptionPane.YES_NO_OPTION,
+	                JOptionPane.QUESTION_MESSAGE,
+	                null,
+	                new String[]{"Yes, run training", "No, cancel"},
+	                "No, cancel"
+	            );
+
+	            if (choice == JOptionPane.YES_OPTION) {
+	                trainCNN(); // Train CNN if "Yes" is selected
+	            }
 			}
 			else {
-				JOptionPane.showMessageDialog(this, "Convolutional Neural Network has been trained already");
+				JOptionPane.showMessageDialog(this, "Convolutional Neural Network has been trained.","Training Already Completed", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 
