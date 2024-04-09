@@ -54,7 +54,9 @@ The project includes functionalities for preprocessing data, loading CSV dataset
 Optional functionalities include a logger for logging CNN actions and a graph visualization for live training visualization.
 
 ## Future Improvements
-Given more time, additional layers such as Softmax and output layers could be implemented for image classification. Integration with an image classifier app could be explored to extend functionality. 
+Given more time, additional layers such as Softmax and output layers could be implemented for image classification. Integration with an image classifier app could be explored to extend functionality.
+
+I would also opt in for ways to shorten my run time due to the ammount of opertations during the runtime of my project. 
 
 ## Sources
 - [An Introduction to different Types of Convolutions in Deep Learning] https://towardsdatascience.com/types-of-convolutions-in-deep-learning-717013397f4d
