@@ -36,7 +36,6 @@ public class Main extends JFrame implements ActionListener{
 	//Attributes
 	private JButton runButton;
 	private JTextArea outputField;
-	private JLabel trademark;
 
     // Flag to keep track of whether CNN is trained or not
 	private boolean cnnTrained = false;
@@ -47,6 +46,7 @@ public class Main extends JFrame implements ActionListener{
 	}
 
 	private void initializeUI() {
+  JLabel trademarkField;
 		
 		setTitle("CNN app");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -75,8 +75,8 @@ public class Main extends JFrame implements ActionListener{
 
         // Create panel for trademark label
 		JPanel bottomPanel = new JPanel();
-		trademark = new JLabel("C22380206 Max Ceban @2024");
-		bottomPanel.add(trademark,BorderLayout.CENTER);
+		trademarkField = new JLabel("@C22380206 Max Ceban 2024");
+		bottomPanel.add(trademarkField,BorderLayout.CENTER);
 		mainPanel.add(bottomPanel,BorderLayout.SOUTH);
         
 		// Add main panel to the frame
