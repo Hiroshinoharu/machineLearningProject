@@ -36,8 +36,7 @@ public class Logger {
 	public static PrintWriter getLogger() {
         try {
             FileWriter fileWriter = new FileWriter(LOG_FILE, true); // Appending mode set to true
-            PrintWriter printWriter = new PrintWriter(fileWriter);
-            return printWriter;
+            return new PrintWriter(fileWriter);
         } catch (IOException e) {
             System.out.println("An error occurred while getting the logger.");
             e.printStackTrace();

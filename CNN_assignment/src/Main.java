@@ -46,7 +46,8 @@ public class Main extends JFrame implements ActionListener{
 	}
 
 	private void initializeUI() {
-  JLabel trademarkField;
+        
+		JLabel trademarkField;
 		
 		setTitle("CNN app");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -125,9 +126,9 @@ public class Main extends JFrame implements ActionListener{
 		// Set the flag 'cnnTrained' to true to indicate that the CNN has been trained.
 		// Finally, shutdown the executor service to release its resources.
 		executorService.execute(() -> {
+			cnnTrained = true; // Set flag to true indicating CNN is trained or training
 			ConvolutionalNeuralNetwork.run();  // Run CNN training
 			Logger.updateTextArea(Logger.getLogger(), outputField); // Update output field with logs
-			cnnTrained = true; // Set flag to true indicating CNN is trained
 			executorService.shutdown(); // Shutdown the executor service
 		});
 	}
